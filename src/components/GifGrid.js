@@ -1,27 +1,16 @@
 import React,{useState,useEffect} from 'react'
 import { GifGridItem } from './GifGridItem';
+import { getGifs } from '../helpers/getGifs';
 
 export const GifGrid = ({category}) => {
 
     const [images, setimages] = useState([])
 
     useEffect( ()=>{
-        getGifs();
-    },[]);
+        getGifs(category).then(setimages);
+    },[category]);
 
-    const getGifs = async() => {
-        const url = 'https://api.giphy.com/v1/gifs/search?api_key=c1AR1jg6oM4HDe2HZAeUcs4IXrN31EST&q=transformers&limit=10';
-        const resp = await fetch(url);
-        const {data} = await resp.json();
-        const gifs  = data.map(img => {
-            return {
-                id: img.id,
-                title: img.title,
-                url: img.images?.downsized_medium.url
-            }
-        })
-        setimages(gifs);
-    }
+    
 
     return (
         <>
